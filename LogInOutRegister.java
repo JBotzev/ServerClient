@@ -1,8 +1,9 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class LogInOutRegister {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         Scanner in = new Scanner(System.in);
         System.out.print("Register(R), log in(I) or log out(O):");
         String action = in.nextLine();
@@ -19,7 +20,7 @@ public class LogInOutRegister {
         }
     }
 
-    public static void register(){
+    public static void register() throws IOException {
         Scanner in = new Scanner(System.in);
         System.out.print("Username: ");
         String username = in.nextLine();
@@ -27,6 +28,8 @@ public class LogInOutRegister {
         System.out.print("Password: ");
         String password = in.nextLine();
 
+        Client client = new Client();
+        client.run();
         System.out.println("You are registered! Username: " + username + ". Password: " + password);
     }
 

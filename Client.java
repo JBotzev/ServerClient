@@ -8,6 +8,11 @@ import org.json.JSONObject;
 public class Client {
 
     public static void main(String[] args) throws IOException {
+
+    }
+
+    public void run() throws IOException {
+
         Socket socket = new Socket("localhost", 8080);
         System.out.println("Connected to server");
         OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
@@ -21,7 +26,7 @@ public class Client {
 
         String line = reader.readLine();
         jsonObject = new JSONObject(line);
-        System.out.println("Recieved from Server:\n"+jsonObject.toString(2));
+        System.out.println("Recieved from Server:\n" + jsonObject.toString(2));
         socket.close();
     }
 }
