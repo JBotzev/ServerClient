@@ -2,3 +2,12 @@
 *.iml
 *.xml
 .idea/**/.xml
+out
+*.class
+out/**
+
+# IntelliJ project files 
+*.iml
+*.iws
+*.ipr
+.idea/
