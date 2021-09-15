@@ -5,7 +5,6 @@
 out
 *.class
 out/**
-*.jar
 
 # IntelliJ project files 
 *.iml
@@ -13,5 +12,4 @@ out/**
 *.ipr
 .idea/
 /bin/
-.jar
 *.project
