@@ -30,7 +30,6 @@ public class LogInOutRegister {
 
         Client client = new Client(username, password);
         client.run();
-        System.out.println("You are registered! Username: " + username + ". Password: " + password);
     }
 
     public static void logIn(){

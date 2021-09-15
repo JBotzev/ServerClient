@@ -1,13 +1,18 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
+
+    private final String ip = "localhost";
+    private final int port = 8080;
+    private static final Counter counter = new Counter();
+    private static HashMap<String, String> id_pass = new HashMap<String, String>();
+
     public static void main(String[] args) throws IOException {
     	System.out.println("Server running");
         ServerSocket serverSocket = new ServerSocket(8080);
@@ -30,13 +35,24 @@ public class Server {
                     OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 
-                    String line = reader.readLine();
-                    JSONObject jsonObject = new JSONObject(line);
+                    //String line = reader.readLine();
+                    //JSONObject jsonObject = new JSONObject(line);
 
-                    writer.write(jsonObject.toString() + "\n");
-                    writer.flush();
+//                    writer.write(jsonObject.toString() + "\n");
+//                    writer.flush();
 
-                } catch (IOException e) {
+                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                    String[] data = (String[]) ois.readObject();
+                    System.out.println("RECEIVED DATA : " + data[0] + " - " + data[1]);
+
+                    if(checkIfIdAlreadyExist(data[0], data[1])){
+                        System.out.println("ERROR");
+                    }
+                    else {
+                        generateJSON(data);
+                    }
+
+                } catch (IOException | ClassNotFoundException | InterruptedException e) {
                     e.printStackTrace();
                 } finally {
                     closeSocket();
@@ -53,6 +69,66 @@ public class Server {
 
         thread.start();
 
+    }
+
+    private static void takeAction(int steps, int seconds) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(seconds);
+        counter.increase(steps);
+        System.out.println("counter value:" + counter.getValue());
+    }
+
+    private static boolean checkIfIdAlreadyExist(String id, String pwd){
+        if(id_pass.containsKey(id)){
+            System.out.println("this id already exists");
+            return true;
+        }
+        id_pass.put(id, pwd);
+        return false;
+    }
+
+    private static JSONObject generateJSON(String[] data) throws InterruptedException {
+
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonServer = new JSONObject();
+        JSONObject jsonAction = new JSONObject();
+
+        jsonObject.put("id", data[0]);
+        jsonObject.put("password", data[1]);
+
+        jsonServer.put("ip", "localhost");
+        jsonServer.put("port", 8080);
+
+        int delay = (int) (Math.random() *10) + 1;
+        jsonAction.put("delay", delay);
+        int[] action = new int[]{(int) (Math.random() * 10) + 1, (int) (Math.random() * 10) + 1,
+                (int) (Math.random() * 10) + 1};
+        jsonAction.put("steps", action);
+
+        jsonObject.put("server", jsonServer);
+        jsonObject.put("actions", jsonAction);
+
+        System.out.println(jsonObject);
+
+//        JSONArray data_file = new JSONArray();
+//        data_file.put(jsonObject);
+
+        //Write JSON file
+        try (FileWriter file = new FileWriter((data[0] + ".json"))) {
+            //We can write any JSONArray or JSONObject instance to the file
+            file.write(jsonObject.toString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(int i = 0; i < action.length; i++){
+            takeAction(action[i],delay);
+            File file = new File((data[0] + ".json"));
+            if (file.exists()){
+                file.delete();
+            }
+        }
+        return jsonObject;
     }
 
 

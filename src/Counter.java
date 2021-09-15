@@ -17,4 +17,6 @@ public class Counter {
     public static void decrease(int value){
         counter = counter - value;
     }
+
+    public static int getValue(){return counter;}
 }
