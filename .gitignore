@@ -5,9 +5,13 @@
 out
 *.class
 out/**
+*.jar
 
 # IntelliJ project files 
 *.iml
 *.iws
 *.ipr
 .idea/
+/bin/
+.jar
+*.project

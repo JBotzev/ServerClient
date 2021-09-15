@@ -28,7 +28,7 @@ public class LogInOutRegister {
         System.out.print("Password: ");
         String password = in.nextLine();
 
-        Client client = new Client();
+        Client client = new Client(username, password);
         client.run();
         System.out.println("You are registered! Username: " + username + ". Password: " + password);
     }

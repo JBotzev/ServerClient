@@ -7,6 +7,14 @@ import org.json.JSONObject;
 
 public class Client {
 
+    private String id;
+    private String password;
+
+    public Client(String id, String password){
+        this.id = id;
+        this.password = password;
+    }
+
     public static void main(String[] args) throws IOException {
 
     }
@@ -19,8 +27,8 @@ public class Client {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", "super1337h4xx0r");
-        jsonObject.put("password", "supersecurepassword");
+        jsonObject.put("id", this.id);
+        jsonObject.put("password", this.password);
         writer.write(jsonObject.toString() + "\n");
         writer.flush();
 
