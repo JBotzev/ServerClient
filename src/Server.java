@@ -10,7 +10,6 @@ public class Server {
 
     private final String ip = "localhost";
     private final int port = 8080;
-    private static final Counter counter = new Counter();
     private static HashMap<String, String> id_pass = new HashMap<String, String>();
 
     public static void main(String[] args) throws IOException {
@@ -28,12 +27,13 @@ public class Server {
     }
 
     private static void startHandler(final Socket socket) throws IOException{
+
         Thread thread = new Thread() {
             @Override
             public void run() {
                 try {
-                    OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+//                    OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
+//                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 
                     //String line = reader.readLine();
                     //JSONObject jsonObject = new JSONObject(line);
@@ -71,7 +71,7 @@ public class Server {
 
     }
 
-    private static void takeAction(int steps, int seconds) throws InterruptedException {
+    private static void takeAction(int steps, int seconds, Counter counter) throws InterruptedException {
         TimeUnit.SECONDS.sleep(seconds);
         counter.increase(steps);
         System.out.println("counter value:" + counter.getValue());
@@ -107,6 +107,7 @@ public class Server {
         jsonObject.put("server", jsonServer);
         jsonObject.put("actions", jsonAction);
 
+        Counter counter = new Counter();
         System.out.println(jsonObject);
 
 //        JSONArray data_file = new JSONArray();
@@ -122,7 +123,7 @@ public class Server {
             e.printStackTrace();
         }
         for(int i = 0; i < action.length; i++){
-            takeAction(action[i],delay);
+            takeAction(action[i],delay, counter);
             File file = new File((data[0] + ".json"));
             if (file.exists()){
                 file.delete();
@@ -130,6 +131,7 @@ public class Server {
         }
         return jsonObject;
     }
+
 
 
 }
