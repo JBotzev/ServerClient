@@ -56,13 +56,15 @@ public class Server {
                     rsa.initFromStrings();
                     String decrUser = "";
                     String decrPass = "";
+                    System.out.println("Encrypted id in server:\n"+data[0]);
+                    System.out.println("Encrypted pass in server:\n"+data[1]);
                     try{
                         System.out.println("---------------------------------------");
                     decrUser = rsa.decrypt(data[0]);
                     decrPass = rsa.decrypt(data[1]);
                     data = new String[] {decrUser, decrPass};
-//                        System.out.println("SERVER DECRT "+ decrUser);
-//                        System.out.println(decrPass);
+                        System.out.println("SERVER decryptred: "+ decrUser);
+                        System.out.println("SERVER decrypted:" + decrPass);
 
                     }catch (Exception ingored){}
 
