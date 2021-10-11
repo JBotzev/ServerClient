@@ -16,7 +16,6 @@ public class Server {
     private final String ip = "localhost";
     private final int port = 8080;
     private static HashMap<String, String> id_pass = new HashMap<String, String>();
-    private KeyPair decrPair;
 
     public static void main(String[] args) throws Exception {
     	System.out.println("Server running");
@@ -53,8 +52,21 @@ public class Server {
 //                    CipherSample cipher = new CipherSample(data[0], data[1]);
 //
 //
+                    CipherRSA rsa = new CipherRSA();
+                    rsa.initFromStrings();
+                    String decrUser = "";
+                    String decrPass = "";
+                    try{
+                        System.out.println("---------------------------------------");
+                    decrUser = rsa.decrypt(data[0]);
+                    decrPass = rsa.decrypt(data[1]);
+                    data = new String[] {decrUser, decrPass};
+//                        System.out.println("SERVER DECRT "+ decrUser);
+//                        System.out.println(decrPass);
 
-                    if(checkIfIdAlreadyExist(data[0], data[1])){
+                    }catch (Exception ingored){}
+
+                    if(checkIfIdAlreadyExist(decrUser, decrPass)){
                         System.out.println("ERROR");
                     }
                     else {

@@ -26,10 +26,18 @@ public class Client {
 //      writer.flush();
 
         String[] idData = new String[]{this.id, this.password};
-        CipherSample cipher = new CipherSample(this.id, this.password);
-        cipher.initFromStrings();
-        cipher.encrypt();
-        String[] encrData = new String[] {cipher.getEncrId(), cipher.getEncrPass()};
+
+        CipherRSA rsa = new CipherRSA();
+//        rsa.init();
+        rsa.initFromStrings();
+        String encrID = rsa.encrypt(this.id);
+        String encrPass = rsa.encrypt(this.password);
+
+
+//        CipherSample cipher = new CipherSample(this.id, this.password);
+//        cipher.initFromStrings();
+//        cipher.encrypt();
+        String[] encrData = new String[] {encrID, encrPass};
 
         System.out.println("SENDING DATA");
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
