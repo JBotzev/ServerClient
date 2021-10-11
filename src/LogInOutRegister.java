@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class LogInOutRegister {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws Exception{
         Scanner in = new Scanner(System.in);
         System.out.print("Register(R), log in(I) or log out(O):");
         String action = in.nextLine();
@@ -20,7 +20,7 @@ public class LogInOutRegister {
         }
     }
 
-    public static void register() throws IOException {
+    public static void register() throws Exception {
         Scanner in = new Scanner(System.in);
         System.out.print("Username: ");
         String username = in.nextLine();

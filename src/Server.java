@@ -5,14 +5,20 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.Signature;
+
+import javax.crypto.Cipher;
 
 public class Server {
 
     private final String ip = "localhost";
     private final int port = 8080;
     private static HashMap<String, String> id_pass = new HashMap<String, String>();
+    private KeyPair decrPair;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
     	System.out.println("Server running");
         ServerSocket serverSocket = new ServerSocket(8080);
 
@@ -26,7 +32,7 @@ public class Server {
         }
     }
 
-    private static void startHandler(final Socket socket) throws IOException{
+    private static void startHandler(final Socket socket) throws Exception{
 
         Thread thread = new Thread() {
             @Override
@@ -43,7 +49,10 @@ public class Server {
 
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     String[] data = (String[]) ois.readObject();
-                    System.out.println("RECEIVED DATA : " + data[0] + " - " + data[1]);
+
+//                    CipherSample cipher = new CipherSample(data[0], data[1]);
+//
+//
 
                     if(checkIfIdAlreadyExist(data[0], data[1])){
                         System.out.println("ERROR");

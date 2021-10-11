@@ -17,11 +17,7 @@ public class Client {
         this.password = password;
     }
 
-    public static void main(String[] args) throws IOException {
-
-    }
-
-    public void run() throws IOException {
+    public void run() throws Exception {
         Socket socket = new Socket("localhost", this.port);
         OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
@@ -30,9 +26,14 @@ public class Client {
 //      writer.flush();
 
         String[] idData = new String[]{this.id, this.password};
+        CipherSample cipher = new CipherSample(this.id, this.password);
+        cipher.initFromStrings();
+        cipher.encrypt();
+        String[] encrData = new String[] {cipher.getEncrId(), cipher.getEncrPass()};
 
+        System.out.println("SENDING DATA");
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-        oos.writeObject(idData);
+        oos.writeObject(encrData);
         oos.flush();
 
         // String line = reader.readLine();
