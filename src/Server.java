@@ -15,6 +15,7 @@ public class Server {
 
     private final String ip = "localhost";
     private final int port = 8080;
+    private static String action;
     private static HashMap<String, String> id_pass = new HashMap<String, String>();
 
     public static void main(String[] args) throws Exception {
@@ -48,7 +49,7 @@ public class Server {
 
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     String[] data = (String[]) ois.readObject();
-
+                    action = data[2];
 //                    CipherSample cipher = new CipherSample(data[0], data[1]);
 //
 //
@@ -66,10 +67,10 @@ public class Server {
                         System.out.println("SERVER decryptred: "+ decrUser);
                         System.out.println("SERVER decrypted:" + decrPass);
 
-                    }catch (Exception ingored){}
+                    }catch (Exception ignored){}
 
-                    if(checkIfIdAlreadyExist(decrUser, decrPass)){
-                        System.out.println("ERROR");
+                    if(checkIfIdAlreadyExist(decrUser, decrPass, action)){
+                        System.out.println("EXISTS");
                     }
                     else {
                         generateJSON(data);
@@ -100,9 +101,15 @@ public class Server {
         System.out.println("counter value:" + counter.getValue());
     }
 
-    private static boolean checkIfIdAlreadyExist(String id, String pwd){
+    private static boolean checkIfIdAlreadyExist(String id, String pwd, String action){
         if(id_pass.containsKey(id)){
-            System.out.println("this id already exists");
+            if (action.equals("r")){
+                System.out.println("this id already exists, cannot create account");
+            }
+            if (action.equals("i")){
+                System.out.println("You have successfully logged in! Welcome " + id + ". ");
+            }
+
             return true;
         }
         id_pass.put(id, pwd);

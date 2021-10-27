@@ -28,22 +28,24 @@ public class LogInOutRegister {
         System.out.print("Password: ");
         String password = in.nextLine();
 
-        Client client = new Client(username, password);
+        Client client = new Client(username, password, "r");
         client.run();
     }
 
-    public static void logIn(){
+    public static void logIn() throws Exception {
         Scanner in = new Scanner(System.in);
         System.out.print("Username: ");
         String username = in.nextLine();
 
         System.out.print("Password: ");
         String password = in.nextLine();
+        Client client = new Client(username, password, "i");
+        client.run();
 
-        System.out.println("You have successfully logged in! Welcome " + username + ". ");
     }
 
     public static void logOut(){
         System.out.println("Successfully logged out!");
+        System.exit(0);
     }
 }

@@ -9,10 +9,12 @@ public class Client {
 
     private String id;
     private String password;
+    private String action;
     private final String ip = "localhost";
     private final int port = 8080;
 
-    public Client(String id, String password){
+    public Client(String id, String password, String action){
+        this.action = action;
         this.id = id;
         this.password = password;
     }
@@ -37,7 +39,7 @@ public class Client {
 //        CipherSample cipher = new CipherSample(this.id, this.password);
 //        cipher.initFromStrings();
 //        cipher.encrypt();
-        String[] encrData = new String[] {encrID, encrPass};
+        String[] encrData = new String[] {encrID, encrPass, action};
 
         System.out.println("SENDING DATA");
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
