@@ -152,12 +152,12 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        File file = new File((data[0] + ".json"));
         for(int i = 0; i < action.length; i++){
             takeAction(action[i],delay, counter);
-            File file = new File((data[0] + ".json"));
-            if (file.exists()){
-                file.delete();
-            }
+        }
+        if (file.exists()){
+            file.delete();
         }
         return jsonObject;
     }
