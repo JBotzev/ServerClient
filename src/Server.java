@@ -73,7 +73,9 @@ public class Server {
                         System.out.println("EXISTS");
                     }
                     else {
-                        generateJSON(data);
+                        if (action.equals("r")) {
+                            generateJSON(data);
+                        }
                     }
 
                 } catch (IOException | ClassNotFoundException | InterruptedException e) {
@@ -112,7 +114,12 @@ public class Server {
 
             return true;
         }
-        id_pass.put(id, pwd);
+        if (action.equals("r")){
+            id_pass.put(id, pwd);
+        } else {
+            System.out.println("account doesnt exist, cant log in");
+        }
+
         return false;
     }
 
